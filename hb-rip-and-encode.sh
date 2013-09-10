@@ -1,4 +1,5 @@
 #!/bin/bash
+# 2013-09-10: Derek Gottlieb
 
 function print_usage {
  echo "Usage: $0 [-s /dev/sr0] [-d $HOME/Videos] [-e 480p] [-t TRACK] -n NAME"
@@ -6,7 +7,7 @@ function print_usage {
 }
 
 SOURCE="/dev/sr0"
-DIR="/home/derek/Videos"
+DIR="$HOME/Videos"
 NAME=""
 TRACK=""
 ENCODE="480p"
