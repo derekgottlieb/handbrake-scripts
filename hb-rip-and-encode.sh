@@ -49,7 +49,7 @@ fi
 # If source is a ripped mkv, we can use it's filename if not specified
 IS_SOURCE_MKV=$(echo $SOURCE | grep -c "mkv$")
 if [ "$IS_SOURCE_MKV" -gt 0 ] && [ -z "$NAME" ]; then
- NAME=$(basename $1 | sed -e 's/\.mkv//')
+ NAME=$(basename $SOURCE | sed -e 's/\.mkv//')
 else
  if [ -z "$NAME" ]; then
   print_usage
