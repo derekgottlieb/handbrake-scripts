@@ -47,12 +47,9 @@ if [ "$IS_SOURCE_DEV" -gt 0 ]; then
 fi
 
 # If source is a ripped mkv, we can use it's filename if not specified
-IS_SOURCE_MKV=$(echo $SOURCE | grep -c "mkv$")
-IS_SOURCE_MPG=$(echo $SOURCE | grep -c "mpg$")
-if [ "$IS_SOURCE_MKV" -gt 0 ] && [ -z "$NAME" ]; then
- NAME=$(basename $SOURCE | sed -e 's/\.mkv//')
-elif [ "$IS_SOURCE_MPG" -gt 0 ] && [ -z "$NAME" ]; then
- NAME=$(basename $SOURCE | sed -e 's/\.mpg//')
+IS_SOURCE_NOT_DVD=$(echo $SOURCE | grep -c -v "/dev")
+if [ "$IS_SOURCE_NOT_DVD" -gt 0 ] && [ -z "$NAME" ]; then
+ NAME=$(basename "$SOURCE" | sed -e 's/\.mkv//' -e 's/\.mpg//')
 else
  if [ -z "$NAME" ]; then
   print_usage
