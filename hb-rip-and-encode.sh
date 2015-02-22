@@ -48,8 +48,11 @@ fi
 
 # If source is a ripped mkv, we can use it's filename if not specified
 IS_SOURCE_MKV=$(echo $SOURCE | grep -c "mkv$")
+IS_SOURCE_MPG=$(echo $SOURCE | grep -c "mpg$")
 if [ "$IS_SOURCE_MKV" -gt 0 ] && [ -z "$NAME" ]; then
  NAME=$(basename $SOURCE | sed -e 's/\.mkv//')
+elif [ "$IS_SOURCE_MPG" -gt 0 ] && [ -z "$NAME" ]; then
+ NAME=$(basename $SOURCE | sed -e 's/\.mpg//')
 else
  if [ -z "$NAME" ]; then
   print_usage
@@ -83,5 +86,5 @@ esac
 
 #HandBrakeCLI -i /dev/dvd -o ${DIR}/$1.m4v -t $2 -e x264 -q 20.0 -a 1,1 -E faac,copy:ac3 -B 160,160 -6 dpl2,auto -R Auto,Auto -D 0.0,0.0 -f mp4 --detelecine --decomb --loose-anamorphic -m -x b-adapt=2:rc-lookahead=50
 
-HandBrakeCLI -i ${SOURCE} -o ${DIR}/${NAME}_${ENCODE}.m4v ${TRACK_OPT} ${ENCODE_OPTS}
+HandBrakeCLI -i "${SOURCE}" -o "${DIR}/${NAME}_${ENCODE}.m4v" ${TRACK_OPT} ${ENCODE_OPTS}
 
