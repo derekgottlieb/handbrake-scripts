@@ -40,7 +40,7 @@ IS_SOURCE_DEV=$(echo $SOURCE | grep -c "^/dev")
 if [ "$IS_SOURCE_DEV" -gt 0 ]; then
  if [ -z "$TRACK" ]; then
   print_usage
-  exit
+  exit 1
  else
   TRACK_OPT="-t $TRACK"
  fi
@@ -53,7 +53,7 @@ if [ "$IS_SOURCE_NOT_DVD" -gt 0 ] && [ -z "$NAME" ]; then
 else
  if [ -z "$NAME" ]; then
   print_usage
-  exit
+  exit 1
  fi
 fi
 
@@ -77,11 +77,18 @@ case $ENCODE in
   ;;
  *)
   echo "ERROR: Invalid encode option: $ENCODE. Valid options are 480p, 720p, 1080p."
-  exit
+  exit 1
   ;;
 esac
 
 #HandBrakeCLI -i /dev/dvd -o ${DIR}/$1.m4v -t $2 -e x264 -q 20.0 -a 1,1 -E faac,copy:ac3 -B 160,160 -6 dpl2,auto -R Auto,Auto -D 0.0,0.0 -f mp4 --detelecine --decomb --loose-anamorphic -m -x b-adapt=2:rc-lookahead=50
 
-HandBrakeCLI -i "${SOURCE}" -o "${DIR}/${NAME}_${ENCODE}.m4v" ${TRACK_OPT} ${ENCODE_OPTS}
+#HandBrakeCLI -i "${SOURCE}" -o "${DIR}/${NAME}_${ENCODE}.m4v" ${TRACK_OPT} ${ENCODE_OPTS}
+HandBrakeCLI -i "${SOURCE}" -o "${DIR}/${NAME}.m4v" ${TRACK_OPT} ${ENCODE_OPTS}
+rc=$?
 
+if [[ -x ~/bin/notify.sh ]]; then
+  ~/bin/notify.sh "${DIR}/${NAME}.m4v rip completed"
+fi
+
+exit $rc

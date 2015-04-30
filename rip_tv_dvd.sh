@@ -3,40 +3,16 @@
 
 SCRIPTPATH=$(dirname $(readlink -f $0))
 
-if [ -z $1 ]; then
+if [[ $# -ne 5 ]]; then
  echo "Usage: $0 SHOW SEASON FIRST_EP START_TRACK END_TRACK"
  exit 1
-else
- SHOW=$1
 fi
 
-if [ -z $2 ]; then
- echo "Usage: $0 SHOW SEASON FIRST_EP START_TRACK END_TRACK"
- exit 1
-else
- SEASON=$2
-fi
-
-if [ -z $3 ]; then
- echo "Usage: $0 SHOW SEASON FIRST_EP START_TRACK END_TRACK"
- exit 1
-else
- FIRST_EP=$3
-fi
-
-if [ -z $4 ]; then
- echo "Usage: $0 SHOW SEASON FIRST_EP START_TRACK END_TRACK"
- exit 1
-else
- START_TRACK=$4
-fi
-
-if [ -z $5 ]; then
- echo "Usage: $0 SHOW SEASON FIRST_EP START_TRACK END_TRACK"
- exit 1
-else
- END_TRACK=$5
-fi
+SHOW=$1
+SEASON=$2
+FIRST_EP=$3
+START_TRACK=$4
+END_TRACK=$5
 
 # if available get the title and get the number of titles
 #TITLE=$(echo "$LSDVDOUTPUT" | grep -i Disc | sed 's/Disc Title: //g')
@@ -66,3 +42,7 @@ for (( c=$START_TRACK; c <= $END_TRACK; c++ )) do
 
  EP=$((EP+1))
 done
+
+if [[ -x ~/bin/notify.sh ]]; then
+  ~/bin/notify.sh "Rip complete for $SHOW disk starting with s$SEASON e$FIRST_EP"
+fi
